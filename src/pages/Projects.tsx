@@ -63,6 +63,28 @@ const ProjectCard = ({
   );
 };
 
+const ExperienceCard = ({ exp, i }: { exp: typeof clientExperiences[0]; i: number }) => {
+  const { ref, isVisible } = useScrollReveal();
+  return (
+    <div
+      ref={ref}
+      className={`card-base p-6 transition-all duration-500
+        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+      style={{ transitionDelay: `${i * 80}ms` }}
+    >
+      <div className="text-3xl mb-3">{exp.icon}</div>
+      <h3 className="font-heading font-bold text-lg text-navy-800 mb-1">{exp.clientName}</h3>
+      <p className="text-xs text-accent font-semibold mb-3">{exp.projectType}</p>
+      <p className="text-sm text-muted leading-relaxed mb-4">{exp.summary}</p>
+      <div className="flex flex-wrap gap-1.5">
+        {exp.toolsUsed.map((t) => (
+          <span key={t} className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">{t}</span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const Projects = () => (
   <main className="pt-16">
     {/* Page hero */}
@@ -125,28 +147,9 @@ const Projects = () => (
           subtitle="Every engagement — big or small — we bring the same level of focus and craftsmanship."
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {clientExperiences.map((exp, i) => {
-            const { ref, isVisible } = useScrollReveal();
-            return (
-              <div
-                key={exp.id}
-                ref={ref}
-                className={`card-base p-6 transition-all duration-500
-                  ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-                style={{ transitionDelay: `${i * 80}ms` }}
-              >
-                <div className="text-3xl mb-3">{exp.icon}</div>
-                <h3 className="font-heading font-bold text-lg text-navy-800 mb-1">{exp.clientName}</h3>
-                <p className="text-xs text-accent font-semibold mb-3">{exp.projectType}</p>
-                <p className="text-sm text-muted leading-relaxed mb-4">{exp.summary}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {exp.toolsUsed.map((t) => (
-                    <span key={t} className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">{t}</span>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+          {clientExperiences.map((exp, i) => (
+             <ExperienceCard key={exp.id} exp={exp} i={i} />
+          ))}
         </div>
       </div>
     </section>
